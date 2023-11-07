@@ -1,19 +1,26 @@
 fn main() {
-    let word1: &str = "ab";
-    let word2: &str = "pqrs";
-    let count1 = word1.chars().count();
-    let count2 = word2.chars().count();
+    let word1 = "xyz";
+    let word2 = "pqrs";
+    let len1 = word1.len();
+    let len2 = word2.len();
 
-    let total_char_count = count1 + count1;
+    let len = len1 + len2;
 
-    const len = total_char_count;
+    println!("{}", len);
 
-    let mut v = [""; len];
+    let mut v: Vec<char> = vec!['a'; 10];
 
-    // for w in word1.chars() {
-    //     v.push(w)
-    // }
-    v[0] = "a";
+    for (i, w) in word1.chars().enumerate() {
+        let index: usize = i + (i * 1);
+        v[index] = w
+    }
 
-    println!("{:?}", v.join(""))
+    for (i, w) in word2.chars().enumerate() {
+        let index: usize = i + 1 + (i * 1);
+        v[index] = w
+    }
+
+    let string: String = v.iter().collect();
+
+    println!("{:?}", string)
 }
