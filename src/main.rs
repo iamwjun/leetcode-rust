@@ -1,26 +1,18 @@
 fn main() {
-    let word1 = "xyz";
+    let word1 = "xyzuvw";
     let word2 = "pqrs";
-    let len1 = word1.len();
-    let len2 = word2.len();
+    let max_len = std::cmp::max(word1.len(), word2.len());
+    let mut res = String::from("");
 
-    let len = len1 + len2;
+    for i in 0..max_len {
+        if i < word1.len() {
+            res.push(word1.chars().nth(i).unwrap());
+        }
 
-    println!("{}", len);
-
-    let mut v: Vec<char> = vec!['a'; 10];
-
-    for (i, w) in word1.chars().enumerate() {
-        let index: usize = i + (i * 1);
-        v[index] = w
+        if i < word2.len() {
+            res.push(word2.chars().nth(i).unwrap());
+        }
     }
 
-    for (i, w) in word2.chars().enumerate() {
-        let index: usize = i + 1 + (i * 1);
-        v[index] = w
-    }
-
-    let string: String = v.iter().collect();
-
-    println!("{:?}", string)
+    println!("{}", res)
 }
