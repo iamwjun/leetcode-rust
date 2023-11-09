@@ -1,18 +1,22 @@
 fn main() {
-    let word1 = "xyzuvw";
-    let word2 = "pqrs";
-    let max_len = std::cmp::max(word1.len(), word2.len());
-    let mut res = String::from("");
+    let s = "01000111";
+    // let s = "00111";
+    // let s = "111";
+    let (mut x, mut y, mut z) = (0, 0, 0);
+    let mut pre_char = 'a';
 
-    for i in 0..max_len {
-        if i < word1.len() {
-            res.push(word1.chars().nth(i).unwrap());
+    for (i, c) in s.chars().enumerate() {
+        if c == '1' {
+            z += 1;
+            x = std::cmp::max(x, std::cmp::min(y, z) * 2);
+        } else if i == 0 || pre_char == '1' {
+            y = 1;
+            z = 0;
+        } else {
+            y += 1
         }
-
-        if i < word2.len() {
-            res.push(word2.chars().nth(i).unwrap());
-        }
+        pre_char = c;
     }
 
-    println!("{}", res)
+    println!("{}", x)
 }
