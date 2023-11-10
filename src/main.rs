@@ -1,21 +1,21 @@
 fn main() {
-    let nums1: Vec<i32> = vec![1, 1, 2];
-    let nums2: Vec<i32> = vec![2, 4];
+    let spells: Vec<i32> = vec![5, 1, 3];
+    let potions: Vec<i32> = vec![1, 2, 3, 4, 5];
+    let success: i64 = 7;
 
-    let (len1, len2) = (nums1.len(), nums2.len());
-    let (mut left, mut right) = (0, 0);
-    let mut res = nums1[left];
+    println!("{:?}", successful_pairs(spells, potions, success))
+}
 
-    while left < len1 &&  right < len2{
-        if nums1[left] == nums2[right] {
-            res = nums1[left]
+fn successful_pairs(spells: Vec<i32>, potions: Vec<i32>, success: i64) -> Vec<i32> {
+    let mut res: Vec<i32> = vec![];
+    for s in spells {
+        let mut total: i32 = 0;
+        for p in &potions {
+            if  (s as i64) * (*p as i64) >= success {
+                total += 1;
+            }
         }
-        if nums1[left] < nums2[right] {
-            left += 1
-        } else {
-            right += 1
-        }
+        res.push(total);
     }
-
-    println!("{:?}", res)
+    res
 }
