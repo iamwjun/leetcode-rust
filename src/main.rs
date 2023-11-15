@@ -1,10 +1,16 @@
 fn main() {
-    let nums = vec![2,2,1,1,1,2,2];
+    let mut nums = vec![1, 2, 3, 4, 5, 6, 7];
+    let k = 3;
 
-    println!("{:?}", majority_element(nums));
+    println!("{:?}", rotate(&mut nums, k));
+    
 }
 
-fn majority_element(mut nums: Vec<i32>) -> i32 {
-    nums.sort();
-    nums[nums.len() / 2]
+fn rotate(nums: &mut Vec<i32>, mut k: i32) {
+    while k > 0 {
+        if let Some(last) = nums.pop() {
+            nums.insert(0, last);
+        }
+        k -= 1;
+    }
 }
