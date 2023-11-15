@@ -1,12 +1,17 @@
 fn main() {
-    let mut nums = vec![1, 2, 3, 4, 5, 6, 7];
-    let k = 3;
+    let prices = vec![7,1,5,3,6,4];
 
-    println!("{:?}", rotate(&mut nums, k));
+    println!("{:?}", max_profit(prices));
     
 }
 
-fn rotate(nums: &mut Vec<i32>, k: i32) {
-    let m = k as usize % nums.len();
-    nums.rotate_right(m)
+fn max_profit(prices: Vec<i32>) -> i32 {
+    let mut min_price = prices[0];
+    let mut max_profit = 0;
+    for p in prices {
+        min_price = std::cmp::min(min_price, p);
+        max_profit = std::cmp::max(max_profit, p - min_price);
+    }
+
+    max_profit
 }
