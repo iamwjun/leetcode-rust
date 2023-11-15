@@ -6,11 +6,7 @@ fn main() {
     
 }
 
-fn rotate(nums: &mut Vec<i32>, mut k: i32) {
-    while k > 0 {
-        if let Some(last) = nums.pop() {
-            nums.insert(0, last);
-        }
-        k -= 1;
-    }
+fn rotate(nums: &mut Vec<i32>, k: i32) {
+    let m = k as usize % nums.len();
+    nums.rotate_right(m)
 }
