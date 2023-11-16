@@ -1,18 +1,16 @@
 fn main() {
-    let prices = vec![7,1,5,3,6,4];
+    let prices = vec![2,3,1,1,4];
 
-    println!("{:?}", max_profit(prices));
+    println!("{:?}", can_jump(prices));
     
 }
 
-fn max_profit(prices: Vec<i32>) -> i32 {
-    let mut max_profit = 0;
+fn can_jump(nums: Vec<i32>) -> bool {
+    let mut curr = 0;
 
-    for i in 1..prices.len() {
-        if prices[i] > prices[i - 1] {
-            max_profit += prices[i] - prices[i - 1]
-        }
+    while curr < nums.len() {
+        curr += nums[curr] as usize
     }
 
-    max_profit
+    curr == nums.len()
 }
