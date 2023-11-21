@@ -1,19 +1,31 @@
 fn main() {
-    let s = String::from("   fly me   to   the moon  ");
+    let s: Vec<String> = vec![
+        String::from("flower"),
+        String::from("flow"),
+        String::from("flight"),
+    ];
 
-    println!("{:?}", length_of_last_word(s));
-    
+    println!("{:?}", longest_common_prefix(s));
 }
 
-fn length_of_last_word(s: String) -> i32 {
-    let mut len = 0;
-    for w in s.chars().rev() {
-        if w != ' ' {
-            len += 1;
-        }
-        if w == ' ' && len > 0 {
-            break;
+fn longest_common_prefix(strs: Vec<String>) -> String {
+    let mut res = String::new();
+
+    if let Some(str) = strs.get(0) {
+        for (i, s) in str.chars().enumerate() {
+            let mut is_breack = false;
+            for string in strs.iter().skip(1) {
+                if Some(s) != string.chars().nth(i) {
+                    is_breack = true;
+                    break;
+                }
+            }
+            if is_breack {
+                break;
+            }
+            res.push(s);
         }
     }
-    len
+
+    res
 }
