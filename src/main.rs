@@ -1,24 +1,19 @@
 fn main() {
-    let prices = vec![3,2,1,0,4];
+    let s = String::from("   fly me   to   the moon  ");
 
-    println!("{:?}", can_jump(prices));
+    println!("{:?}", length_of_last_word(s));
     
 }
 
-fn can_jump(nums: Vec<i32>) -> bool {
-    let len = nums.len();
-    let mut max_reach = 0;
-
-    for (i, v) in nums.iter().enumerate() {
-        if i > max_reach {
-            return  false;
+fn length_of_last_word(s: String) -> i32 {
+    let mut len = 0;
+    for w in s.chars().rev() {
+        if w != ' ' {
+            len += 1;
         }
-
-        max_reach = max_reach.max(i + (*v as usize));
-
-        if max_reach >= len - 1 {
+        if w == ' ' && len > 0 {
             break;
         }
     }
-    true
+    len
 }
