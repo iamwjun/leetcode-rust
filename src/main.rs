@@ -1,29 +1,27 @@
 fn main() {
-    let s: Vec<String> = vec![
-        String::from("flower"),
-        String::from("flow"),
-        String::from("flight"),
-    ];
+    let roman_numeral = String::from("IX");
 
-    println!("{:?}", longest_common_prefix(s));
+    println!("{:?}", roman_to_int(roman_numeral));
 }
 
-fn longest_common_prefix(strs: Vec<String>) -> String {
-    let mut res = String::new();
+fn roman_to_int(s: String) -> i32 {
+    let roman_map = std::collections::HashMap::from([
+        ('I', 1),
+        ('V', 5),
+        ('X', 10),
+        ('L', 50),
+        ('C', 100),
+        ('D', 500),
+        ('M', 1000),
+    ]);
+    
+    let mut res = 0;
 
-    if let Some(str) = strs.get(0) {
-        for (i, s) in str.chars().enumerate() {
-            let mut is_breack = false;
-            for string in strs.iter().skip(1) {
-                if Some(s) != string.chars().nth(i) {
-                    is_breack = true;
-                    break;
-                }
-            }
-            if is_breack {
-                break;
-            }
-            res.push(s);
+    for (i, char) in s.chars().enumerate() {
+        if i < s.len() - 1 && roman_map[&char] < roman_map[&s.chars().nth(i + 1).unwrap()] {
+            res -= roman_map[&char];
+        } else {
+            res += roman_map[&char];
         }
     }
 
