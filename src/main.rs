@@ -1,29 +1,34 @@
 fn main() {
-    let roman_numeral = String::from("IX");
+    let numeral = 3;
 
-    println!("{:?}", roman_to_int(roman_numeral));
+    println!("{:?}", int_to_roman(numeral));
 }
 
-fn roman_to_int(s: String) -> i32 {
-    let roman_map = std::collections::HashMap::from([
-        ('I', 1),
-        ('V', 5),
-        ('X', 10),
-        ('L', 50),
-        ('C', 100),
-        ('D', 500),
-        ('M', 1000),
-    ]);
-    
-    let mut res = 0;
+fn int_to_roman(mut num: i32) -> String {
+    let mut result = String::new();
 
-    for (i, char) in s.chars().enumerate() {
-        if i < s.len() - 1 && roman_map[&char] < roman_map[&s.chars().nth(i + 1).unwrap()] {
-            res -= roman_map[&char];
-        } else {
-            res += roman_map[&char];
+    let roman_map: Vec<(&str, i32)> = vec![
+        ("M", 1000),
+        ("CM", 900),
+        ("D", 500),
+        ("CD", 400),
+        ("C", 100),
+        ("XC", 90),
+        ("L", 50),
+        ("XL", 40),
+        ("X", 10),
+        ("IX", 9),
+        ("V", 5),
+        ("IV", 4),
+        ("I", 1),
+    ];
+
+    for (i, v) in roman_map {
+        while num >= v {
+            result.push_str(i);
+            num -= v;
         }
     }
 
-    res
+    result
 }
