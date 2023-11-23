@@ -1,34 +1,13 @@
 fn main() {
-    let numeral = 3;
+    let haystack = String::from("but");
+    let needle = String::from("sad");
 
-    println!("{:?}", int_to_roman(numeral));
+    println!("{:?}", str_str(haystack, needle));
 }
 
-fn int_to_roman(mut num: i32) -> String {
-    let mut result = String::new();
-
-    let roman_map: Vec<(&str, i32)> = vec![
-        ("M", 1000),
-        ("CM", 900),
-        ("D", 500),
-        ("CD", 400),
-        ("C", 100),
-        ("XC", 90),
-        ("L", 50),
-        ("XL", 40),
-        ("X", 10),
-        ("IX", 9),
-        ("V", 5),
-        ("IV", 4),
-        ("I", 1),
-    ];
-
-    for (i, v) in roman_map {
-        while num >= v {
-            result.push_str(i);
-            num -= v;
-        }
+fn str_str(haystack: String, needle: String) -> i32 {
+    match haystack.find(&needle) {
+        Some(i) => i as i32,
+        None => -1
     }
-
-    result
 }
