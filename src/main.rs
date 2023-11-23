@@ -1,13 +1,11 @@
 fn main() {
-    let haystack = String::from("but");
-    let needle = String::from("sad");
+    let s = String::from("0P");
 
-    println!("{:?}", str_str(haystack, needle));
+    println!("{:?}", is_palindrome(s));
 }
 
-fn str_str(haystack: String, needle: String) -> i32 {
-    match haystack.find(&needle) {
-        Some(i) => i as i32,
-        None => -1
-    }
+fn is_palindrome(s: String) -> bool {
+    let s = s.chars().filter(|&c| c.is_alphanumeric()).collect::<String>().to_lowercase();
+    let reversed = s.chars().rev().collect::<String>();
+    s == reversed
 }
