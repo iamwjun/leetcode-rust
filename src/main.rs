@@ -1,23 +1,20 @@
 fn main() {
-    let s = String::from("abc");
-    let t = String::from("ahbgadc");
+    let numbers: Vec<i32> = vec![2,7,11,15];
+    let  target = 9;
 
-    println!("{:?}", is_subsequence(s, t));
+    println!("{:?}", two_sum(numbers, target));
 }
 
-fn is_subsequence(s: String, t: String) -> bool {
-    let mut s_iter = s.chars().peekable();
-    println!("{:?}", s_iter);
-    
-    for char_t in t.chars() {
-        println!("t for {}", char_t);
-        if let Some(&chart_s) = s_iter.peek() {
-            println!("{}", &chart_s);
-            if char_t == chart_s {
-                s_iter.next();
+fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
+    let len = numbers.len();
+
+    for i in 0..len {
+        for j in (i + 1)..len {
+            if numbers[i] + numbers[j] == target {
+                return  vec![i as i32 + 1, j as i32 + 1];
             }
         }
     }
-    println!("{:?}", s_iter);
-    s_iter.peek().is_none()
+
+    vec![]
 }
