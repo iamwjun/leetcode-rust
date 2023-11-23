@@ -6,15 +6,14 @@ fn main() {
 }
 
 fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
-    let len = numbers.len();
+    let mut map: std::collections::HashMap<&i32, usize> = std::collections::HashMap::new();
 
-    for i in 0..len {
-        for j in (i + 1)..len {
-            if numbers[i] + numbers[j] == target {
-                return  vec![i as i32 + 1, j as i32 + 1];
-            }
+    for (i, num) in numbers.iter().enumerate() {
+        let value = target - num;
+        if let Some(&index) = map.get(&value) {
+            return vec![index as i32, i as i32 + 1];
         }
+        map.insert(num, i + 1);
     }
-
     vec![]
 }
