@@ -1,33 +1,22 @@
-use  std::collections::HashMap;
-
 fn main() {
-    let pattern = String::from("abba");
-    let s = String::from("dog cat cat fish");
-    let words: Vec<&str> = s.split(" ").collect();
-    println!("{:?}", words);
-    println!("{:?}", word_pattern(pattern, s));
+    let t = String::from("anagram");
+    let s = String::from("nagaram");
+
+    println!("{:?}", is_anagram(s, t));
 }
 
-fn word_pattern(pattern: String, s: String) -> bool {
-    let words: Vec<&str> = s.split(" ").collect();
-
-    if words.len() != pattern.len() {
-        return false;
+fn is_anagram(s: String, t: String) -> bool {
+    if s.len() != t.len() {
+        return  false;
     }
 
-    let mut p_to_s: HashMap<char, &str> = HashMap::new();
-    let mut s_to_p: HashMap<&str, char> = HashMap::new();
+    let mut chars_s: Vec<char> = s.chars().collect();
+    let mut chars_t: Vec<char> = t.chars().collect();
+    chars_s.sort();
+    chars_t.sort();
 
-    for (letter, word) in pattern.chars().zip(words.iter()) {
-        match (p_to_s.get(&letter), s_to_p.get(word)) {
-            (Some(map_p), Some(map_s)) if map_p == word && map_s == map_s => continue,
-            (None, None) => {
-                p_to_s.insert(letter, &word);
-                s_to_p.insert(word, letter);
-            },
-            _ => return false,
-        }
-    }
+    let string_s: String = chars_s.iter().collect();
+    let string_t: String = chars_t.iter().collect();
 
-    true
+    string_s == string_t
 }
