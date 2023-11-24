@@ -6,10 +6,6 @@ fn main() {
 }
 
 fn is_anagram(s: String, t: String) -> bool {
-    if s.len() != t.len() {
-        return  false;
-    }
-
     let mut array = vec![0; 26];
 
     for char in s.into_bytes() {
@@ -17,9 +13,11 @@ fn is_anagram(s: String, t: String) -> bool {
     }
 
     for char in t.into_bytes() {
-        if array[(char - b'a') as usize] > 0 {
-            array[(char - b'a') as usize] -= 1;
-        } else {
+        array[(char - b'a') as usize] -= 1;
+    }
+
+    for n in array {
+        if n != 0 {
             return false;
         }
     }
