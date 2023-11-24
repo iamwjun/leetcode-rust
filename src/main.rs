@@ -10,19 +10,15 @@ fn is_anagram(s: String, t: String) -> bool {
         return  false;
     }
 
-    let mut map_s = std::collections::HashMap::new();
+    let mut array = vec![0; 26];
 
-    for char in s.chars() {
-        *map_s.entry(char).or_insert(0) += 1;
+    for char in s.into_bytes() {
+        array[(char - b'a') as usize] += 1;
     }
 
-    for char in t.chars() {
-        if let Some(count) = map_s.get_mut(&char) {
-            if *count > 0 {
-                *count -= 1;
-            } else {
-                return  false;
-            }
+    for char in t.into_bytes() {
+        if array[(char - b'a') as usize] > 0 {
+            array[(char - b'a') as usize] -= 1;
         } else {
             return false;
         }
