@@ -6,14 +6,23 @@ fn main() {
 }
 
 fn can_construct(ransom_note: String, magazine: String) -> bool {
-    let mut r = ransom_note.chars().peekable();
+    let mut char_count = std::collections::HashMap::new();
 
-    for m in magazine.chars() {
-        if let Some(&p) = r.peek() {
-            if m == p {
-                r.next();
+    for char in magazine.chars() {
+        *char_count.entry(char).or_insert(0) += 1;
+    }
+
+    for r in ransom_note.chars() {
+        if let Some(count) = char_count.get_mut(&r) {
+            if *count > 0 {
+                *count -= 1;
+            } else {
+                return false;
             }
+        } else {
+            return  false;
         }
     }
-    r.peek().is_none()
+
+    true
 }
