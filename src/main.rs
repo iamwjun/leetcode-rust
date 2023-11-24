@@ -6,21 +6,16 @@ fn main() {
 }
 
 fn can_construct(ransom_note: String, magazine: String) -> bool {
-    let mut char_count = std::collections::HashMap::new();
+    let mut vec = vec![0; 26];
 
-    for char in magazine.chars() {
-        *char_count.entry(char).or_insert(0) += 1;
-    }
+    magazine.bytes().for_each(|e| vec[e as usize - 97] += 1);
 
-    for r in ransom_note.chars() {
-        if let Some(count) = char_count.get_mut(&r) {
-            if *count > 0 {
-                *count -= 1;
-            } else {
-                return false;
-            }
-        } else {
-            return  false;
+    let bytes = ransom_note.as_bytes();
+    for b in bytes {
+        let i: usize = (*b - 97) as usize;
+        vec[i] -= 1;
+        if vec[i] < 0 {
+            return false;
         }
     }
 
