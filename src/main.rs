@@ -1,28 +1,31 @@
 use  std::collections::HashMap;
 
 fn main() {
-    let s = String::from("egg");
-    let t = String::from("add");
-
-    println!("{:?}", is_isomorphic(s, t));
+    let pattern = String::from("abba");
+    let s = String::from("dog cat cat fish");
+    let words: Vec<&str> = s.split(" ").collect();
+    println!("{:?}", words);
+    println!("{:?}", word_pattern(pattern, s));
 }
 
-fn is_isomorphic(s: String, t: String) -> bool {
-    if s.len() != t.len() {
-        return  false;
+fn word_pattern(pattern: String, s: String) -> bool {
+    let words: Vec<&str> = s.split(" ").collect();
+
+    if words.len() != pattern.len() {
+        return false;
     }
 
-    let mut s_to_t: HashMap<char, char> = HashMap::new();
-    let mut t_to_s: HashMap<char, char> = HashMap::new();
+    let mut p_to_s: HashMap<char, &str> = HashMap::new();
+    let mut s_to_p: HashMap<&str, char> = HashMap::new();
 
-    for (char_s, char_t) in s.chars().zip(t.chars()) {
-        match (s_to_t.get(&char_s), t_to_s.get(&char_t)) {
-            (Some(&map_s), Some(&map_t)) if map_s == char_t && map_t == char_s => continue,
+    for (letter, word) in pattern.chars().zip(words.iter()) {
+        match (p_to_s.get(&letter), s_to_p.get(word)) {
+            (Some(map_p), Some(map_s)) if map_p == word && map_s == map_s => continue,
             (None, None) => {
-                s_to_t.insert(char_s, char_t);
-                t_to_s.insert(char_t, char_s);
-            }
-            _ => return  false
+                p_to_s.insert(letter, &word);
+                s_to_p.insert(word, letter);
+            },
+            _ => return false,
         }
     }
 
