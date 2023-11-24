@@ -1,21 +1,28 @@
-fn main() {
-    let ransom_note = String::from("aa");
-    let magazine = String::from("aab");
+use  std::collections::HashMap;
 
-    println!("{:?}", can_construct(ransom_note, magazine));
+fn main() {
+    let s = String::from("egg");
+    let t = String::from("add");
+
+    println!("{:?}", is_isomorphic(s, t));
 }
 
-fn can_construct(ransom_note: String, magazine: String) -> bool {
-    let mut vec = vec![0; 26];
+fn is_isomorphic(s: String, t: String) -> bool {
+    if s.len() != t.len() {
+        return  false;
+    }
 
-    magazine.bytes().for_each(|e| vec[e as usize - 97] += 1);
+    let mut s_to_t: HashMap<char, char> = HashMap::new();
+    let mut t_to_s: HashMap<char, char> = HashMap::new();
 
-    let bytes = ransom_note.as_bytes();
-    for b in bytes {
-        let i: usize = (*b - 97) as usize;
-        vec[i] -= 1;
-        if vec[i] < 0 {
-            return false;
+    for (char_s, char_t) in s.chars().zip(t.chars()) {
+        match (s_to_t.get(&char_s), t_to_s.get(&char_t)) {
+            (Some(&map_s), Some(&map_t)) if map_s == char_t && map_t == char_s => continue,
+            (None, None) => {
+                s_to_t.insert(char_s, char_t);
+                t_to_s.insert(char_t, char_s);
+            }
+            _ => return  false
         }
     }
 
