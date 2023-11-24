@@ -1,18 +1,19 @@
 fn main() {
-    let numbers: Vec<i32> = vec![2,7,11,15];
-    let  target = 9;
+    let ransom_note = String::from("aa");
+    let magazine = String::from("aab");
 
-    println!("{:?}", two_sum(numbers, target));
+    println!("{:?}", can_construct(ransom_note, magazine));
 }
 
-fn two_sum(numbers: Vec<i32>, target: i32) -> Vec<i32> {
-    let (mut a, mut b) = (0, numbers.len() - 1);
+fn can_construct(ransom_note: String, magazine: String) -> bool {
+    let mut r = ransom_note.chars().peekable();
 
-    loop {
-        match target.cmp(&(numbers[a] + numbers[b])) {
-            std::cmp::Ordering::Equal => return vec![a as i32 + 1, b as i32 +1],
-            std::cmp::Ordering::Greater => a += 1,
-            std::cmp::Ordering::Less => b -= 1
+    for m in magazine.chars() {
+        if let Some(&p) = r.peek() {
+            if m == p {
+                r.next();
+            }
         }
     }
+    r.peek().is_none()
 }
