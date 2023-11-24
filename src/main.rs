@@ -10,13 +10,23 @@ fn is_anagram(s: String, t: String) -> bool {
         return  false;
     }
 
-    let mut chars_s: Vec<char> = s.chars().collect();
-    let mut chars_t: Vec<char> = t.chars().collect();
-    chars_s.sort();
-    chars_t.sort();
+    let mut map_s = std::collections::HashMap::new();
 
-    let string_s: String = chars_s.iter().collect();
-    let string_t: String = chars_t.iter().collect();
+    for char in s.chars() {
+        *map_s.entry(char).or_insert(0) += 1;
+    }
 
-    string_s == string_t
+    for char in t.chars() {
+        if let Some(count) = map_s.get_mut(&char) {
+            if *count > 0 {
+                *count -= 1;
+            } else {
+                return  false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    true
 }
