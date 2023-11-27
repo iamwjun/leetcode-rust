@@ -1,26 +1,20 @@
-fn main() {
-    let t = String::from("anagram");
-    let s = String::from("nagaram");
+use std::collections::HashMap;
 
-    println!("{:?}", is_anagram(s, t));
+fn main() {
+    let strs: Vec<&str> = vec!["eat", "tea", "tan", "ate", "nat", "bat"];
+
+    println!("{:?}", group_anagrams(strs));
 }
 
-fn is_anagram(s: String, t: String) -> bool {
-    let mut array = vec![0; 26];
+fn group_anagrams(strs: Vec<&str>) -> Vec<Vec<String>> {
+    let mut groups: HashMap<Vec<char>, Vec<String>> = HashMap::new();
 
-    for char in s.into_bytes() {
-        array[(char - b'a') as usize] += 1;
+    for s in strs {
+        let mut chars: Vec<char> = s.chars().collect();
+        chars.sort_unstable();
+
+        groups.entry(chars).or_insert(Vec::new()).push(s.to_string())
     }
 
-    for char in t.into_bytes() {
-        array[(char - b'a') as usize] -= 1;
-    }
-
-    for n in array {
-        if n != 0 {
-            return false;
-        }
-    }
-
-    true
+    groups.into_values().collect()
 }
