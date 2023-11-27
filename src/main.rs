@@ -1,22 +1,35 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 fn main() {
-    let nums: Vec<i32> = vec![-1,-2,-3,-4,-5];
-    let target = -8;
+    let n = 7;
 
-    println!("{:?}", two_sum(nums, target));
+    println!("{:?}", is_happy(n));
 }
 
-fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
-    let mut map: HashMap<&i32, usize> = HashMap::new();
+fn is_happy(n: i32) -> bool {
+    fn get_digits(mut n: i32) -> Vec<i32> {
+        let mut vec: Vec<i32> = Vec::new();
 
-    for (i, v) in nums.iter().enumerate() {
-        let m = target - v;
-        match map.get(&m) {
-            Some(p) => return vec![i as i32, *p as i32],
-            None => map.insert(v, i)
-        };
+        while n!=0 {
+            vec.push(n % 10);
+            n /= 10
+        }
+
+        vec
     }
 
-    vec![]
+    fn sum_digits(v: Vec<i32>) -> i32 {
+        v.iter().map(|d| d * d).sum()
+    }
+
+    let mut has_calculated: HashSet<i32> = HashSet::new();
+    let mut curr = n;
+
+    while curr != 1 && !has_calculated.contains(&curr)  {
+        has_calculated.insert(curr);
+        let digits = get_digits(curr);
+        curr = sum_digits(digits);
+    }
+
+    curr == 1
 }
