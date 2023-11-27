@@ -8,21 +8,18 @@ fn main() {
 }
 
 fn contains_nearby_duplicate(nums: Vec<i32>, k: usize) -> bool {
-    let mut map = HashMap::new();
+    let k = k as usize;
+    let mut map = HashMap::with_capacity(nums.len());
 
-    for (i, v) in nums.iter().enumerate() {
-        match map.get(v) {
-            Some(p)  => {
-                if i - p <= k {
-                    return  true;
-                } else {
-                    map.insert(v, i);
-                }
-            },
-            None => {
-                map.insert(v, i);
+    for (index, value) in nums.iter().enumerate() {
+        if let Some(prev) = map.get(value) {
+            if index - prev <= k {
+                return  true;
             }
+            
         }
+        map.insert(*value, index);
     }
+
     false
 }
