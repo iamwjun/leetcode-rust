@@ -1,35 +1,28 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 fn main() {
-    let n = 7;
+    let nums: Vec<i32> = vec![1,2,3,1];
+    let k = 3;
 
-    println!("{:?}", is_happy(n));
+    println!("{:?}", contains_nearby_duplicate(nums, k));
 }
 
-fn is_happy(n: i32) -> bool {
-    fn get_digits(mut n: i32) -> Vec<i32> {
-        let mut vec: Vec<i32> = Vec::new();
+fn contains_nearby_duplicate(nums: Vec<i32>, k: usize) -> bool {
+    let mut map = HashMap::new();
 
-        while n!=0 {
-            vec.push(n % 10);
-            n /= 10
+    for (i, v) in nums.iter().enumerate() {
+        match map.get(v) {
+            Some(p)  => {
+                if i - p <= k {
+                    return  true;
+                } else {
+                    map.insert(v, i);
+                }
+            },
+            None => {
+                map.insert(v, i);
+            }
         }
-
-        vec
     }
-
-    fn sum_digits(v: Vec<i32>) -> i32 {
-        v.iter().map(|d| d * d).sum()
-    }
-
-    let mut has_calculated: HashSet<i32> = HashSet::new();
-    let mut curr = n;
-
-    while curr != 1 && !has_calculated.contains(&curr)  {
-        has_calculated.insert(curr);
-        let digits = get_digits(curr);
-        curr = sum_digits(digits);
-    }
-
-    curr == 1
+    false
 }
