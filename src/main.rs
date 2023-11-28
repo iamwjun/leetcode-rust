@@ -1,5 +1,7 @@
+use std::collections::VecDeque;
+
 struct FrontMiddleBackQueue {
-    queue: Vec<i32>
+    deque: VecDeque<i32>
 }
 
 /**
@@ -9,42 +11,49 @@ struct FrontMiddleBackQueue {
 impl FrontMiddleBackQueue {
 
     fn new() -> Self {
-        FrontMiddleBackQueue { queue: Vec::new() }
+        FrontMiddleBackQueue { deque: VecDeque::new() }
     }
     
     fn push_front(&mut self, val: i32) {
-        self.queue.insert(0, val);
+        self.deque.insert(0, val);
     }
     
     fn push_middle(&mut self, val: i32) {
-        let pos = self.queue.len() / 2;
-        self.queue.insert(pos, val);
+        let pos = self.len() / 2;
+        self.deque.insert(pos, val);
     }
     
     fn push_back(&mut self, val: i32) {
-        self.queue.push(val)
+        self.deque.insert(self.len(), val)
     }
     
     fn pop_front(&mut self) -> i32 {
-        if self.queue.len() > 0 {
-            return self.queue.remove(0);
+        if let Some(n) = self.deque.pop_front() {
+            return  n;
         }
         -1
     }
     
     fn pop_middle(&mut self) -> i32 {
-        if self.queue.len() > 0 {
-            let pos = (self.queue.len() - 1) / 2;
-            return self.queue.remove(pos);
+        if let Some(n) = self.deque.remove(self.middle_index()) {
+            return n;
         }
         -1
     }
     
     fn pop_back(&mut self) -> i32 {
-        if self.queue.len() > 0 {
-            return self.queue.pop().unwrap();
+        if let Some(n) = self.deque.pop_back() {
+            return n;
         }
         -1
+    }
+
+    fn middle_index(&self) -> usize {
+        (self.len() - 1) / 2
+    }
+
+    fn len(&self) -> usize {
+        self.deque.len()
     }
 }
 
@@ -70,15 +79,23 @@ fn main() {
 
     println!("{:?}", q.push_middle(4));
 
-    println!("{:?}", q.queue);
+    println!("{:?}", q.deque);
 
     println!("{:?}", q.pop_front());
 
-    println!("{:?}", q.pop_middle());
+    println!("{:?}", q.deque);
 
     println!("{:?}", q.pop_middle());
+
+    println!("{:?}", q.deque);
+
+    println!("{:?}", q.pop_middle());
+
+    println!("{:?}", q.deque);
 
     println!("{:?}", q.pop_back());
+
+    println!("{:?}", q.deque);
 
     println!("{:?}", q.pop_front());
 }
