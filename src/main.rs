@@ -4,33 +4,27 @@ fn main() {
     println!("{:?}", merge(intervals));
 }
 
-fn merge(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let mut vec: Vec<Vec<i32>> = vec![];
-    let mut curr = vec![];
-    intervals.sort_unstable_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
-
-    fn is_between(number: i32, vecs: &Vec<i32>) -> bool {
-        number >= vecs[0] && number <= vecs[1]
+fn merge(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    if intervals.is_empty() {
+        return vec![];
     }
+    let mut sort_intervals = intervals;
+    sort_intervals.sort_unstable_by_key(|a| a[0]);
 
-    for num in intervals {
-        if curr.is_empty() {
-            curr = num;
+    let mut vec: Vec<Vec<i32>> = vec![];
+    let mut curr_intervals = sort_intervals[0].clone();
+
+    for interval in sort_intervals.iter().skip(1) {
+        if interval[0] <= curr_intervals[1] {
+            curr_intervals[1] = curr_intervals[1].max(interval[1]);
         } else {
-            if is_between(num[0], &curr)
-            || is_between(num[1], &curr)
-            || is_between(curr[0], &num)
-            || is_between(curr[0], &num) {
-                curr = [num[0].min(curr[0]), num[1].max(curr[1])].to_vec()
-            } else {
-                vec.push(curr);
-                curr = num;
-            }
+            vec.push(curr_intervals);
+            curr_intervals = interval.to_vec();
         }
     }
-    if !curr.is_empty() {
-        vec.push(curr)
-    }
+
+    vec.push(curr_intervals);
+    
     vec
 }
 
