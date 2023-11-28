@@ -1,22 +1,35 @@
 fn main() {
-    let nums: Vec<i32> = vec![0,1,2,4,5,7];
+    let intervals: Vec<Vec<i32>> = vec![vec![2,3],vec![4,5],vec![6,7],vec![8,9],vec![1,10]];
 
-    println!("{:?}", summary_ranges(nums));
+    println!("{:?}", merge(intervals));
 }
 
-fn summary_ranges(nums: Vec<i32>) -> Vec<String> {
-    let mut vec: Vec<String> = Vec::new();
-    let mut start = 0;
+fn merge(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let mut vec: Vec<Vec<i32>> = vec![];
+    let mut curr = vec![];
+    intervals.sort_unstable_by(|a, b| a[0].partial_cmp(&b[0]).unwrap());
 
-    for end in 1..=nums.len() {
-        if end == nums.len() || nums[end] != nums[end - 1] + 1 {
-            if start == end - 1 {
-                vec.push(nums[start].to_string());
+    fn is_between(number: i32, vecs: &Vec<i32>) -> bool {
+        number >= vecs[0] && number <= vecs[1]
+    }
+
+    for num in intervals {
+        if curr.is_empty() {
+            curr = num;
+        } else {
+            if is_between(num[0], &curr)
+            || is_between(num[1], &curr)
+            || is_between(curr[0], &num)
+            || is_between(curr[0], &num) {
+                curr = [num[0].min(curr[0]), num[1].max(curr[1])].to_vec()
             } else {
-                vec.push(format!("{}->{}", nums[start], nums[end - 1]));
+                vec.push(curr);
+                curr = num;
             }
-            start = end;
         }
+    }
+    if !curr.is_empty() {
+        vec.push(curr)
     }
     vec
 }
