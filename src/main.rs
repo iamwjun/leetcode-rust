@@ -13,7 +13,7 @@ impl SmallestInfiniteSet {
 
     fn new() -> Self {
         SmallestInfiniteSet {
-            start: 0,
+            start: 1,
             add: BTreeSet::new()
         }
     }
@@ -26,7 +26,7 @@ impl SmallestInfiniteSet {
             },
             None => {
                 self.start += 1;
-                self.start
+                self.start - 1
             },
         }
     }
