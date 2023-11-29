@@ -1,23 +1,65 @@
-fn main() {
-    let intervals: Vec<Vec<i32>> = vec![vec![1,6], vec![8,10], vec![15,18]];
+use std::collections::BTreeSet;
 
-    println!("{:?}", merge(intervals));
+struct SmallestInfiniteSet {
+    start: i32,
+    add: BTreeSet<i32>,
 }
 
-fn merge(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    intervals.sort_unstable_by_key(|a| a[0]);
+/**
+ * `&self` means the method takes an immutable reference.
+ * If you need a mutable reference, change it to `&mut self` instead.
+ */
+impl SmallestInfiniteSet {
 
-    let mut vec: Vec<Vec<i32>> = vec![];
-    vec.push(intervals.first().unwrap().clone());
-
-    for interval in intervals.iter().skip(1) {
-        if interval[0] <= vec.last().unwrap()[1] {
-            vec.last_mut().unwrap()[1] = vec.last().unwrap()[1].max(interval[1]);
-        } else {
-            vec.push(interval.clone());
+    fn new() -> Self {
+        SmallestInfiniteSet {
+            start: 1,
+            add: BTreeSet::new()
+        }
+    }
+    
+    fn pop_smallest(&mut self) -> i32 {
+        match self.add.iter().min() {
+            Some(&min) => {
+                self.add.remove(&min);
+                min
+            },
+            None => {
+                self.start += 1;
+                self.start
+            },
         }
     }
 
-    vec
+    fn add_back(&mut self, num: i32) {
+        if num < self.start {
+            self.add.insert(num);
+        }
+    }
+}
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * let obj = SmallestInfiniteSet::new();
+ * let ret_1: i32 = obj.pop_smallest();
+ * obj.add_back(num);
+ */
+
+fn main() {
+    let mut smallest = SmallestInfiniteSet::new();
+
+    println!("{:?}", smallest.pop_smallest());
+
+    println!("{:?}", smallest.add_back(1));
+
+    println!("{:?}", smallest.add_back(2));
+
+    println!("{:?}", smallest.add_back(3));
+
+    println!("{:?}", smallest.pop_smallest());
+
+    println!("{:?}", smallest.pop_smallest());
+
+    println!("{:?}", smallest.pop_smallest());
 }
 
