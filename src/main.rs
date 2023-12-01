@@ -1,24 +1,22 @@
 fn main() {
-    let s = String::from("()[]{}");
+    let s = String::from("/../");
 
-    println!("{:?}", is_valid(s));
-
-    println!("{}", 1 << 0);
-
-    println!("{}", 1 << 1);
+    println!("{:?}", simplify_path(s));
 }
 
-fn is_valid(s: String) -> bool {
-    let mut v: Vec<u8> = vec![];
-
-    for char in s.into_bytes() {
-        match char {
-            b')' | b']' | b'}' => if Some(char) != v.pop() {
-                return false;
+fn simplify_path(path: String) -> String {
+    let mut v: Vec<&str> = vec![];
+    
+    for part in path.split('/') {
+        match part {
+            "" | "." => (),
+            ".." => if !v.is_empty() {
+                v.pop();
             },
-            _ => v.push(char + (1 << (char & 1)))
+            _ => v.push(part)
         }
     }
-    v.is_empty()
+
+    format!("/{}", v.join("/"))
 }
 
