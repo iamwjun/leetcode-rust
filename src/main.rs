@@ -1,65 +1,46 @@
-use std::collections::BTreeSet;
-
-struct SmallestInfiniteSet {
-    start: i32,
-    add: BTreeSet<i32>,
-}
-
-/**
- * `&self` means the method takes an immutable reference.
- * If you need a mutable reference, change it to `&mut self` instead.
- */
-impl SmallestInfiniteSet {
-
-    fn new() -> Self {
-        SmallestInfiniteSet {
-            start: 1,
-            add: BTreeSet::new()
-        }
-    }
-    
-    fn pop_smallest(&mut self) -> i32 {
-        match self.add.iter().min() {
-            Some(&min) => {
-                self.add.remove(&min);
-                min
-            },
-            None => {
-                self.start += 1;
-                self.start - 1
-            },
-        }
-    }
-
-    fn add_back(&mut self, num: i32) {
-        if num < self.start {
-            self.add.insert(num);
-        }
-    }
-}
-
-/**
- * Your SmallestInfiniteSet object will be instantiated and called as such:
- * let obj = SmallestInfiniteSet::new();
- * let ret_1: i32 = obj.pop_smallest();
- * obj.add_back(num);
- */
+use std::collections::HashMap;
 
 fn main() {
-    let mut smallest = SmallestInfiniteSet::new();
+    let arr = vec![6,2,3,1,4,5];
+    let mat: Vec<Vec<i32>> = vec![vec![5,1], vec![2,4], vec![6,3]];
 
-    println!("{:?}", smallest.pop_smallest());
+    println!("{:?}", first_complete_index(arr, mat));
+}
 
-    println!("{:?}", smallest.add_back(1));
+fn first_complete_index(arr: Vec<i32>, mat: Vec<Vec<i32>>) -> i32 {
+    let mut coordinates: HashMap<i32, Vec<usize>> = HashMap::new();
+    let mut rows: HashMap<usize, Vec<i32>> = HashMap::new();
+    let mut columns: HashMap<usize, Vec<i32>> = HashMap::new();
 
-    println!("{:?}", smallest.add_back(2));
+    for (row, m) in mat.iter().enumerate() {
+        rows.entry(row).or_insert(m.to_vec());
+        for (column, &v) in m.iter().enumerate() {
+            coordinates.insert(v, vec![row, column]);
+            columns.entry(column).or_insert(Vec::new()).push(v)
+        }
+    }
 
-    println!("{:?}", smallest.add_back(3));
 
-    println!("{:?}", smallest.pop_smallest());
+    for (i, a) in arr.iter().enumerate() {
+        if let Some(v) = coordinates.get(a) {
+            let (row, column) = (v[0], v[1]);
 
-    println!("{:?}", smallest.pop_smallest());
+            if let Some(curr_row) = rows.get_mut(&row) {
+                curr_row[column] = 0;
+                if curr_row.iter().all(|&x| x == 0){
+                    return i as i32;
+                }
+            }
 
-    println!("{:?}", smallest.pop_smallest());
+            if let Some(curr_column) = columns.get_mut(&column) {
+                curr_column[row] = 0;
+                if curr_column.iter().all(|&x| x == 0){
+                    return i as i32;
+                }
+            }
+        }
+    }
+
+    -1
 }
 
