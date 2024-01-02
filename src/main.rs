@@ -5,7 +5,5 @@ fn main() {
 }
 
 fn reverse_words(s: String) -> String {
-    let words: Vec<&str> = s.split_whitespace().rev().into_iter().collect();
-
-    words.join(" ")
+    s.split_whitespace().rev().collect::<Vec<&str>>().join(" ")
 }
