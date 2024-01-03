@@ -1,9 +1,15 @@
 fn main() {
-    let s = String::from("  hello world  ");
+    let nums = vec![1, 2, 3, 4];
 
-    println!("{}", reverse_words(s));
+    println!("{:?}", product_except_self(nums));
 }
 
-fn reverse_words(s: String) -> String {
-    s.split_whitespace().rev().collect::<Vec<&str>>().join(" ")
+fn product_except_self(mut nums: Vec<i32>) -> Vec<i32> {
+    let product = nums.iter().fold(1, |acc, e| acc * e);
+
+    for num in &mut nums {
+        *num = product / *num;
+    }
+
+    nums
 }
