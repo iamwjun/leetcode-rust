@@ -1,30 +1,74 @@
-fn main() {
-    let nums = vec![-1,1,0,-3,3];
-
-    println!("{:?}", product_except_self(nums));
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+    pub val: i32,
+    pub next: Option<Box<ListNode>>,
 }
 
-fn product_except_self(nums: Vec<i32>) -> Vec<i32> {
-    let mut result: Vec<i32> = Vec::new();
-    let len = nums.len();
-
-    let mut left_product = 1;
-    let mut left_products = vec![1;len];
-    let mut right_product = 1;
-    let mut right_products = vec![1;len];
-    
-
-    for i in 1..len {
-        left_product *= nums[i - 1];
-        left_products[i] = left_product;
-
-        right_product *= nums[len - i];
-        right_products[len - i - 1] = right_product;
+impl ListNode {
+    #[inline]
+    fn new(val: i32) -> Self {
+        ListNode { next: None, val }
     }
 
-    for i in 0..len {
-        result.push(left_products[i] * right_products[i]);
+    fn insert(&mut self, val: i32) {
+        let node = Box::new(ListNode {
+            val,
+            next: self.next.take(),
+        });
+        self.next = Some(node);
     }
 
-    result
+    fn pring(&self) {
+        let mut current = Some(self);
+        while let Some(node) = current {
+            println!("val is {}", node.val);
+            current = node.next.as_ref().map(|n| &**n);
+        }
+        println!("None")
+    }
+}
+
+fn main() {
+    // 手动赋值
+    // let mut head = ListNode::new(4);
+    // head.next = Some(Box::new(ListNode::new(5)));
+    // head.next.as_mut().unwrap().next = Some(Box::new(ListNode::new(2)));
+    // head.next.as_mut().unwrap().next.as_mut().unwrap().next = Some(Box::new(ListNode::new(10)));
+
+    // head.pring();
+
+    let vec = vec![5, 2, 13, 3, 8];
+    let head = create_list_node(vec);
+
+    println!("head is {:?}", head);
+
+    println!("{:?}", remove_nodes(head));
+}
+
+fn remove_nodes(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+    let mut pre = head;
+
+    while let Some(node) = pre {
+        println!("val is {}", node.val);
+        pre = node.next;
+    }
+
+    pre
+}
+
+fn create_list_node(vec: Vec<i32>) -> Option<Box<ListNode>> {
+    let mut ret = None;
+    let mut pre_node = &mut ret;
+
+    for v in vec.iter() {
+        let node = Some(Box::new(ListNode::new(*v)));
+        *pre_node = node;
+
+        match pre_node {
+            Some(n) => { pre_node = &mut n.next },
+            None => { unreachable!(); },
+        }
+    }
+
+    ret
 }
