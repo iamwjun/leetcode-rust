@@ -46,14 +46,22 @@ fn main() {
 }
 
 fn remove_nodes(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    let mut pre = head;
-
-    while let Some(node) = pre {
-        println!("val is {}", node.val);
-        pre = node.next;
+    match head {
+        Some(mut curr) => {
+            if let Some(next) = curr.next.take() {
+                let prev = remove_nodes(Some(next));
+                if curr.val < prev.as_ref().unwrap().val {
+                    prev
+                } else {
+                    curr.next = prev;
+                    Some(curr)
+                }
+            } else {
+                Some(curr)
+            }
+        },
+        None => None,
     }
-
-    pre
 }
 
 fn create_list_node(vec: Vec<i32>) -> Option<Box<ListNode>> {
