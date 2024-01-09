@@ -1,24 +1,25 @@
 fn main() {
-    let heights = vec![11, 19, 12, 15, 14, 18, 7, 1, 8, 9];
+    let points: Vec<Vec<i32>> = vec![vec![0,0],vec![1,0],vec![-1,0],vec![0,1],vec![0,-1]];
 
-    println!("{:?}", can_see_persons_count(heights));
+    println!("{:?}", number_of_boomerangs(points));
 }
 
-fn can_see_persons_count(heights: Vec<i32>) -> Vec<i32> {
-    let len = heights.len();
-    let mut ret: Vec<i32> = vec![0; len];
-    let mut stack: Vec<i32> = Vec::new();
+fn squared_euclidean_distance(point1: Vec<i32>, point2: Vec<i32>) -> f64 {
+    ((point2[0] - point1[0]).pow(2) + (point2[1] - point1[1]).pow(2)) as f64
+}
 
-    for (i, &h) in heights.iter().enumerate().rev() {
-        while !stack.is_empty() && *stack.last().unwrap() < h {
-            stack.pop();
-            ret[i] += 1;
-        }
-        if !stack.is_empty() {
-            ret[i] += 1;
-        }
+fn number_of_boomerangs(points: Vec<Vec<i32>>) -> i32 {
+    let mut ret: i32 = 0;
+    
+    for i in 1..points.len() - 1 {
+        let point1 = points[i-1].clone();
+        let point2 = points[i].clone();
+        let point3 = points[i].clone();
+        let point4 = points[i+1].clone();
 
-        stack.push(h);
+        if squared_euclidean_distance(point1, point2) == squared_euclidean_distance(point3, point4) {
+            ret += 2
+        }
     }
 
     ret
