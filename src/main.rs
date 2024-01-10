@@ -1,10 +1,18 @@
 fn main() {
-    let s = String::from("leetscode");
-    let dictionary: Vec<String> = vec!["leet".to_string(),"code".to_string(),"leetcode".to_string()];
+    let s = String::from("ABFCACDB");
 
-    println!("{:?}", min_extra_char(s, dictionary));
+    println!("{:?}", min_length(s));
 }
 
-fn min_extra_char(s: String, dictionary: Vec<String>) -> i32 {
-    -1
+fn min_length(s: String) -> usize {
+    let ab = "AB".as_bytes();
+    let cd = "CD".as_bytes();
+    s.as_bytes()
+        .windows(2)
+        .filter(|&window| window == ab)
+        .count()
+        + s.as_bytes()
+            .windows(2)
+            .filter(|&window| window == cd)
+            .count()
 }
