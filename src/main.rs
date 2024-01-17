@@ -1,34 +1,25 @@
-use std::collections::HashMap;
-
 fn main() {
-    let words1: Vec<String> = vec![
-        "leetcode".to_string(),
-        "is".to_string(),
-        "amazing".to_string(),
-        "as".to_string(),
-        "is".to_string()
-    ];
-    let words2: Vec<String> = vec![
-        "amazing".to_string(),
-        "leetcode".to_string(),
-        "is".to_string()
+    let words = vec![
+        "cd".to_string(),
+        "ac".to_string(),
+        "dc".to_string(),
+        "ca".to_string(),
+        "zz".to_string()
     ];
 
-    println!("{:?}", count_words(words1, words2));
+    println!("{:?}", maximum_number_of_string_pairs(words));
 }
 
-fn count_words(words1: Vec<String>, words2: Vec<String>) -> i32 {
-    let mut map: HashMap<String, u32> = HashMap::new();
+fn maximum_number_of_string_pairs(words: Vec<String>) -> i32 {
+    let mut ret = 0;
 
-    for word in words1 {
-        map.entry(word)
-            .and_modify(|value| { *value += 2 })
-            .or_insert(1);
+    for (i, word) in words.iter().enumerate() {
+        for j in words.iter().skip(i + 1) {
+            if *word == j.chars().rev().collect::<String>() {
+                ret += 1;
+            }
+        }
     }
 
-    for word in words2 {
-        map.entry(word).and_modify(|value| { *value += 1 });
-    }
-
-    map.values().filter(|&&value| value == 2).count() as i32
+    ret
 }
