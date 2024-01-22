@@ -1,25 +1,21 @@
-fn main() {
-    let words = vec![
-        "cd".to_string(),
-        "ac".to_string(),
-        "dc".to_string(),
-        "ca".to_string(),
-        "zz".to_string()
-    ];
+use std::collections::HashMap;
 
-    println!("{:?}", maximum_number_of_string_pairs(words));
+fn main() {
+    let num: i32 = 2736;
+
+    println!("{:?}", maximum_swap(num));
 }
 
-fn maximum_number_of_string_pairs(words: Vec<String>) -> i32 {
-    let mut ret = 0;
+fn maximum_swap(num: i32) -> i32 {
+    let number_str = num.to_string();
+    println!("{:?}", number_str);
+    let mut map = HashMap::new();
 
-    for (i, word) in words.iter().enumerate() {
-        for j in words.iter().skip(i + 1) {
-            if *word == j.chars().rev().collect::<String>() {
-                ret += 1;
-            }
-        }
+    for (i, v) in number_str.chars().enumerate() {
+        map.entry(i).or_insert(v.to_string());
     }
 
-    ret
+    println!("{:?}", map);
+
+    1
 }
