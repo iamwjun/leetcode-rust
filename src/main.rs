@@ -1,31 +1,22 @@
 fn main() {
-    let num: i32 = 12;
+    let nums = vec![25, 9, 7];
 
-    println!("{:?}", maximum_swap(num));
+    println!("alternating_subarray {:?}", alternating_subarray(nums));
 }
 
-fn maximum_swap(mut num: i32) -> i32 {
-    let mut vec: Vec<i32> = Vec::new();
+fn alternating_subarray(nums: Vec<i32>) -> i32 {
+    let mut ret = -1;
 
-    while num > 0 {
-        vec.insert(0, num % 10);
-        num /= 10;
-    }
-
-    for (i, m) in vec.iter().enumerate() {
-        if let Some((index, max_value)) = vec
-            .iter()
-            .skip(i + 1)
-            .enumerate()
-            .max_by_key(|&(_, &value)| value)
-        {
-            let max_index = index + i + 1;
-            if max_value > m {
-                vec.swap(i, max_index);
+    for (i, m) in nums.iter().enumerate() {
+        for (j, n) in nums.iter().skip(i + 1).enumerate() {
+            let length = j + 2;
+            if n - m == (length - 1) as i32 % 2 {
+                ret = ret.max(length as i32);
+            } else {
                 break;
             }
         }
     }
 
-    vec.iter().fold(0, |acc, &x| acc * 10 + x)
+    ret
 }
