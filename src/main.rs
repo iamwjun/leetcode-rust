@@ -1,21 +1,31 @@
-use std::collections::HashMap;
-
 fn main() {
-    let num: i32 = 2736;
+    let num: i32 = 12;
 
     println!("{:?}", maximum_swap(num));
 }
 
-fn maximum_swap(num: i32) -> i32 {
-    let number_str = num.to_string();
-    println!("{:?}", number_str);
-    let mut map = HashMap::new();
+fn maximum_swap(mut num: i32) -> i32 {
+    let mut vec: Vec<i32> = Vec::new();
 
-    for (i, v) in number_str.chars().enumerate() {
-        map.entry(i).or_insert(v.to_string());
+    while num > 0 {
+        vec.insert(0, num % 10);
+        num /= 10;
     }
 
-    println!("{:?}", map);
+    for (i, m) in vec.iter().enumerate() {
+        if let Some((index, max_value)) = vec
+            .iter()
+            .skip(i + 1)
+            .enumerate()
+            .max_by_key(|&(_, &value)| value)
+        {
+            let max_index = index + i + 1;
+            if max_value > m {
+                vec.swap(i, max_index);
+                break;
+            }
+        }
+    }
 
-    1
+    vec.iter().fold(0, |acc, &x| acc * 10 + x)
 }
