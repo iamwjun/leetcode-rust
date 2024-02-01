@@ -4,8 +4,6 @@ fn main() {
     println!("{:?}", minimum_seconds(nums));
 }
 
-fn minimum_seconds(nums: Vec<i32>) -> i32 {
-    let mut ret = 0;
+fn distinct_difference_array(nums: Vec<i32>) -> Vec<i32> {
 
-    ret
 }
