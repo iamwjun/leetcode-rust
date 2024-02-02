@@ -1,20 +1,17 @@
-use std::collections::HashSet;
+use std::collections::HashMap;
 
 fn main() {
-    let nums = vec![3,2,3,4,2];
+    let nums = vec![2,1,3,3,2];
 
-    println!("{:?}", distinct_difference_array(nums));
+    println!("{:?}", minimum_seconds(nums));
 }
 
-fn distinct_difference_array(nums: Vec<i32>) -> Vec<i32> {
-    let len = nums.len();
-    let mut ret: Vec<i32> = vec![0;len];
+fn minimum_seconds(nums: Vec<i32>) -> i32 {
+    let mut map: HashMap<&i32, i32> = HashMap::new();
 
-    for i in 0..len {
-        let left: HashSet<_> = nums[0..(i + 1)].iter().cloned().collect();
-        let right: HashSet<_> = nums[(i + 1)..len].iter().cloned().collect();
-        ret[i] = left.len() as i32 - right.len() as i32;
+    for num in nums.iter() {
+        *map.entry(num).or_insert(0) += 1;
     }
 
-    ret
+    (map.len() - 1) as i32
 }
